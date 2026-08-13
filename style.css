@@ -75,12 +75,15 @@ a {
 /* --- SECTION 1 — HERO --- */
 .hero-section {
     height: 100vh;
+    min-height: 100vh;
+    min-height: 100svh;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     padding: 0 4rem;
+    overflow: hidden;
 }
 
 @media (max-width: 768px) {
@@ -138,16 +141,35 @@ a {
     position: relative;
     z-index: 3;
     transform-origin: center center;
+    
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+.hero-logo-wrapper::before,
+.hero-logo-wrapper::after {
+    display: none !important;
+    content: none !important;
 }
 
 .hero-logo {
-    width: clamp(500px, 68vw, 1000px);
-    max-width: none;
+    width: clamp(280px, 72vw, 900px);
+    max-width: 90vw;
     height: auto;
     max-height: none;
     object-fit: contain;
     display: block;
+    margin: 0 auto;
     transform-origin: center center;
+    
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 .hero-text-block {
@@ -207,18 +229,28 @@ a {
 /* CRITICAL LOGO OVERRIDES */
 .hero-section .hero-logo,
 .hero-section .hero-logo img {
-    width: clamp(500px, 68vw, 1000px) !important;
-    max-width: none !important;
+    width: clamp(280px, 72vw, 900px) !important;
+    max-width: 90vw !important;
     height: auto !important;
     max-height: none !important;
     display: block !important;
+    margin: 0 auto !important;
+    object-fit: contain !important;
+}
+
+@media (max-width: 1024px) {
+    .hero-section .hero-logo,
+    .hero-section .hero-logo img {
+        width: min(78vw, 650px) !important;
+        max-width: 88vw !important;
+    }
 }
 
 @media (max-width: 768px) {
     .hero-section .hero-logo,
     .hero-section .hero-logo img {
         width: 82vw !important;
-        max-width: none !important;
+        max-width: 420px !important;
     }
 }
 

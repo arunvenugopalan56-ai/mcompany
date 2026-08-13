@@ -43,10 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    // Logo cinematic entrance: scale 0.75 -> 1.0, opacity 0 -> 1, blur 12px -> 0
+    // Logo cinematic entrance: scale 0.85 -> 1.0, opacity 0 -> 1
     loadTimeline.fromTo('#hero-logo',
-        { opacity: 0, scale: 0.75, filter: 'blur(12px)' },
-        { opacity: 1, scale: 1.0, filter: 'blur(0px)', duration: 2.0, ease: 'power3.out' },
+        { opacity: 0, scale: 0.85 },
+        { opacity: 1, scale: 1.0, duration: 1.5, ease: 'power3.out' },
         0.2
     );
 
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             }
         },
-        1.2
+        1.0
     );
 
     // =========================================================================
@@ -142,40 +142,40 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Keep logo large for first 30% of scroll
-    heroScrollTimeline.to({}, { duration: 0.3 });
+    // Keep logo large for first 20% of scroll
+    heroScrollTimeline.to({}, { duration: 0.2 });
 
-    // Shrink logo wrapper and move up
+    // Shrink logo wrapper and move up (from 20% to 60% of scroll)
     heroScrollTimeline.to('#hero-logo-wrap', {
-        scale: 0.35,
-        y: '-18vh',
-        duration: 0.5,
+        scale: 0.42,
+        y: '-15vh',
+        duration: 0.4,
         ease: 'power1.inOut'
-    }, 0.3);
+    }, 0.2);
 
-    // Reveal tagline text block
+    // Reveal tagline text block (starts appearing at 20% scroll, prominent at 40-60%)
     heroScrollTimeline.to('#hero-text-block', {
         opacity: 1,
         y: 0,
         filter: 'blur(0px)',
-        duration: 0.5,
+        duration: 0.45,
         ease: 'power2.out'
-    }, 0.35);
+    }, 0.25);
 
-    // Fade out explore indicator
+    // Fade out explore indicator quickly as scroll starts
     heroScrollTimeline.to('#explore-indicator', {
         opacity: 0,
-        y: -30,
-        duration: 0.25,
+        y: -20,
+        duration: 0.2,
         ease: 'power1.in'
-    }, 0.1);
+    }, 0.05);
 
     // Background parallax shifting
     heroScrollTimeline.to('#hero-bg-image', {
         y: '8vh',
         ease: 'none',
-        duration: 0.7
-    }, 0.3);
+        duration: 0.6
+    }, 0.2);
 
     // =========================================================================
     // 4. SERVICES INTERACTIVE ACCORDION / SCROLL STATE (DESKTOP ONLY)
