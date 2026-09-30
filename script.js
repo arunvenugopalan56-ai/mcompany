@@ -32,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. HERO SECTION LOAD ANIMATIONS
     // =========================================================================
     const heroBgImage = document.getElementById('hero-bg-image');
+<<<<<<< HEAD
     const heroLogoEl = document.getElementById('hero-logo');
     const heroSection = document.getElementById('hero');
 
@@ -85,6 +86,53 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // 3. HERO MOUSE PARALLAX (DESKTOP ONLY)
     // =========================================================================
+=======
+    const loadTimeline = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1.8 } });
+
+    // Background scale down from 1.08 to 1.0
+    if (heroBgImage) {
+        loadTimeline.fromTo(heroBgImage, 
+            { scale: 1.08 },
+            { scale: 1.0, duration: 2.5, ease: 'power2.out' },
+            0
+        );
+    }
+
+    // Logo cinematic entrance: scale 0.85 -> 1.0, opacity 0 -> 1
+    loadTimeline.fromTo('#hero-logo',
+        { opacity: 0, scale: 0.85 },
+        { opacity: 1, scale: 1.0, duration: 1.5, ease: 'power3.out' },
+        0.2
+    );
+
+    // Scroll explore indicator fades in
+    loadTimeline.fromTo('#explore-indicator',
+        { opacity: 0, y: 20 },
+        { 
+            opacity: 1, 
+            y: 0, 
+            duration: 1.5, 
+            ease: 'power3.out',
+            onComplete: () => {
+                // Subtle logo pulse scale after load finishes (scale 1 -> 1.015 -> 1)
+                gsap.to('#hero-logo', {
+                    scale: 1.015,
+                    duration: 3,
+                    yoyo: true,
+                    repeat: -1,
+                    ease: 'power1.inOut'
+                });
+            }
+        },
+        1.0
+    );
+
+    // =========================================================================
+    // 3. HERO MOUSE PARALLAX (DESKTOP ONLY)
+    // =========================================================================
+    const heroSection = document.getElementById('hero');
+
+>>>>>>> 5f46428c7f187e54b603dfd81b2e5c4004e01d96
     if (heroSection && heroBgImage && !isTouchDevice) {
         heroSection.addEventListener('mousemove', (e) => {
             const { width, height } = heroSection.getBoundingClientRect();
@@ -139,6 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // =========================================================================
     // 3A. HERO SCROLL TRIGGER (PINNING & TRANSFORMATION)
     // =========================================================================
+<<<<<<< HEAD
     if (heroSection) {
         const heroScrollTimeline = gsap.timeline({
             scrollTrigger: {
@@ -202,6 +251,53 @@ document.addEventListener('DOMContentLoaded', () => {
             duration: 0.6
         }, 0.2);
     }
+=======
+    const heroScrollTimeline = gsap.timeline({
+        scrollTrigger: {
+            trigger: '#hero',
+            start: 'top top',
+            end: '+=100%', // Pin for 1 full viewport height distance
+            pin: true,
+            scrub: true,
+            invalidateOnRefresh: true
+        }
+    });
+
+    // Keep logo large for first 20% of scroll
+    heroScrollTimeline.to({}, { duration: 0.2 });
+
+    // Shrink logo wrapper and move up (from 20% to 60% of scroll)
+    heroScrollTimeline.to('#hero-logo-wrap', {
+        scale: 0.42,
+        y: '-15vh',
+        duration: 0.4,
+        ease: 'power1.inOut'
+    }, 0.2);
+
+    // Reveal tagline text block (starts appearing at 20% scroll, prominent at 40-60%)
+    heroScrollTimeline.to('#hero-text-block', {
+        opacity: 1,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.45,
+        ease: 'power2.out'
+    }, 0.25);
+
+    // Fade out explore indicator quickly as scroll starts
+    heroScrollTimeline.to('#explore-indicator', {
+        opacity: 0,
+        y: -20,
+        duration: 0.2,
+        ease: 'power1.in'
+    }, 0.05);
+
+    // Background parallax shifting
+    heroScrollTimeline.to('#hero-bg-image', {
+        y: '8vh',
+        ease: 'none',
+        duration: 0.6
+    }, 0.2);
+>>>>>>> 5f46428c7f187e54b603dfd81b2e5c4004e01d96
 
     // =========================================================================
     // 4. SERVICES INTERACTIVE ACCORDION / SCROLL STATE (DESKTOP ONLY)
@@ -239,6 +335,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const preLaunchView = document.getElementById('pre-launch-view');
     const postLaunchView = document.getElementById('post-launch-view');
 
+<<<<<<< HEAD
     if (daysVal && hoursVal && minutesVal && secondsVal) {
         function updateCountdown() {
             const now = new Date().getTime();
@@ -307,6 +404,72 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         );
     }
+=======
+    function updateCountdown() {
+        const now = new Date().getTime();
+        const difference = launchDate.getTime() - now;
+
+        // If launch date has passed, show Live view
+        if (difference <= 0) {
+            clearInterval(countdownInterval);
+            
+            if (preLaunchView && postLaunchView) {
+                preLaunchView.style.display = 'none';
+                postLaunchView.style.display = 'block';
+
+                // GSAP reveal live elements
+                gsap.fromTo(postLaunchView.querySelectorAll('.live-title, .live-subtitle'),
+                    { opacity: 0, y: 35 },
+                    { opacity: 1, y: 0, stagger: 0.25, duration: 1.6, ease: 'power4.out' }
+                );
+            }
+            return;
+        }
+
+        // Calculations for days, hours, minutes and seconds
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        // Format and set numbers
+        const prevSec = secondsVal.textContent;
+        
+        daysVal.textContent = days.toString().padStart(2, '0');
+        hoursVal.textContent = hours.toString().padStart(2, '0');
+        minutesVal.textContent = minutes.toString().padStart(2, '0');
+        secondsVal.textContent = seconds.toString().padStart(2, '0');
+
+        // Apply a subtle pulse to the seconds text on change
+        if (prevSec !== seconds.toString().padStart(2, '0')) {
+            secondsVal.classList.add('timer-pulse');
+            setTimeout(() => {
+                secondsVal.classList.remove('timer-pulse');
+            }, 300);
+        }
+    }
+
+    // Run once initially and set interval
+    updateCountdown();
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    // Fade-in animations for Countdown Section Entrance
+    gsap.fromTo('.fade-up-cnt', 
+        { opacity: 0, y: 40 },
+        { 
+            opacity: 1, 
+            y: 0, 
+            stagger: 0.15, 
+            duration: 1.5, 
+            ease: 'power3.out',
+            scrollTrigger: {
+                trigger: '#launch',
+                start: 'top 75%',
+                once: true
+            }
+        }
+    );
+>>>>>>> 5f46428c7f187e54b603dfd81b2e5c4004e01d96
 
     // Fade-in animations for Footer Entrance (Staggered Column Reveals)
     const footerTimeline = gsap.timeline({
@@ -454,6 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Force hide custom cursor on mobile viewports
         cursor.style.display = 'none';
     }
+<<<<<<< HEAD
 
     // =========================================================================
     // 8. SITE HEADER SCROLL ELEVATION
@@ -604,4 +768,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, { passive: true });
     }
+=======
+>>>>>>> 5f46428c7f187e54b603dfd81b2e5c4004e01d96
 });
